@@ -1,121 +1,82 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Saweba 2</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Saweba 2</div>
-      </div>
-    </div>
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="stylesheet.css"/>
+        <title>Saweba 2 site</title>
+    </head>
+    <body>
+        <center>
+            <div class="Main">
+                <h1>Saweba 2</h1>
+                <p>Welcome to the Saweba 2 site.</p>
+                <hr />
+                <h4>What is Saweba 2?</h4>
+                <i>It honestly feels like I keep saying this and it just feels like Deja Vu...</i>
+                <p>
+                    Saweba 2 is a 2d shooter game, taking inspiration from the Arcade Berzerk (It really dosnt feel like it though to be completely honest.)
+                    Among other titles. The game also takes massive inspiration from old Arcades.
+                </p>
+                <h4>Is there any public demo?</h4>
+                <p>
+                    There is a public demo called the <a href="https://github.com/PlainSys/Saweba-2-Exordium">Saweba 2 Exordium</a>. This "version" has been "discontinued" since we have
+                    moved into the Alpha stages (well technially we were already in the alpha stages??).
+                </p>
+                <p>Below are several ways to play the demos (Mirror links or whatever).</p>
+                <table>
+                    <tr>
+                        <th>Website</th>
+                        <th>Mirrors</th>
+                    </tr>
+                    <tr>
+                        <td>Itch.Io (Exoridum alongside previous Exordium versions)</td>
+                        <td><a href="https://plainsys.itch.io/saweba-2-exordium">Link</a></td>
+                    </tr>
+                    <tr>
+                        <td>Browser (Old build)</td>
+                        <td><a href="https://plainsys.github.io/Saweba-2-Exordium/Web/">Link</a></td>
+                    </tr>
+                    <tr>
+                        <td>Tixte (Mostly used for sharing on Discord) [Current version]</td>
+                        <td><a href="https://plain.tixte.co/v1.3.4.zip">Link</a></td>
+                    </tr>
+                    <tr>
+                        <td>Normal Download [Current version]</td>
+                        <td><a href="v1.3.4.zip">Download</a></td>
+                    </tr>
+                </table>
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/S2 Exordium webbuild.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/S2 Exordium webbuild.data",
-        frameworkUrl: buildUrl + "/S2 Exordium webbuild.framework.js",
-        codeUrl: buildUrl + "/S2 Exordium webbuild.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Aranorten",
-        productName: "Saweba 2",
-        productVersion: "1.0.0",
-        showBanner: unityShowBanner,
-      };
+                <p>I also *sometimes* write about progress on the poopy dev log</p>
+                <a href="https://plainsys.github.io/Dev-log/8-7-24">heres the most recent one</a>
 
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-        unityShowBanner('WebGL builds are not supported on mobile devices.');
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "640px";
-        canvas.style.height = "360px";
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          fullscreenButton.onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    </script>
-
-    <h1>Demo</h1>
-  </body>
+                <!-- <h4>Soundtrack</h4>
+    <p>Below is the soundtrack that plays in the Exordium</p>
+    <h5>Title Screen</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>
+    <h5>Stage 1</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>
+    <h5>Stage 1 Boss</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>
+    <h5>Stage Complete</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>
+    <h5>Game Over</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>
+    <h5>Results</h5>
+    <audio controls>
+        <source src="Music/test.mp3" type="audio/mpeg" />
+    </audio>-->
+            </div></center>
+        
+    </body>
 </html>
